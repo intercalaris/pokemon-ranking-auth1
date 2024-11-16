@@ -18,17 +18,20 @@
         <div class="col-sm-12">
           <h3>Pokemon Leaderboard</h3>
           <div class="pyramid">
-            <% let rowLength = 1; %>
-            <% for (let i = 0; i < messages.length; ) { %>
+            <!-- first row has one pokemon (length 1) -->
+            <% let rowLength = 1; %> 
+            <!-- iterate through all the pokemon (items) -->
+            <% for (let i = 0; i < items.length; ) { %>
               <div class="row-wrapper">
-                <% for (let j = 0; j < rowLength && i < messages.length; j++, i++) { %>
+                <!-- in each row, iterate through num of pokemon entries, making sure we're both under num of poke total and num of poke in row, increment both -->
+                <% for (let j = 0; j < rowLength && i < items.length; j++, i++) { %>
                   <div class="message">
-                    <div class="name"><%= messages[i].name %></div>
-                    <% if (messages[i].img) { %>
-                      <img src="<%= messages[i].img %>" alt="Pokemon">
+                    <div class="name"><%= items[i].name %></div>
+                    <% if (items[i].img) { %>
+                      <img src="<%= items[i].img %>" alt="Pokemon">
                     <% } %>
                     <div class="stats">
-                      <span><%= messages[i].thumbUp %></span>
+                      <span><%= items[i].thumbUp %></span>
                       <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                       <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                       <i class="fa fa-trash-o" aria-hidden="true"></i>

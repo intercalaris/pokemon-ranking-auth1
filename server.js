@@ -1,49 +1,61 @@
-var express  = require('express');
+const express = require('express');
 const methodOverride = require('method-override');
-var app      = express();
-var port     = process.env.PORT || 8080;
-var mongoose = require('mongoose');
-var passport = require('passport');
-var flash    = require('connect-flash');
-var morgan       = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const flash = require('connect-flash');
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const session = require('express-session');
 
-var configDB = require('./config/database.js');
+const configDB = require('./config/database.js');
+const app = express();
+const port = process.env.PORT || 8080;
 
-var db
+const startServer = async () => {
+  try {
+    console.log('Connecting to MongoDB...');
+    await mongoose.connect(configDB.url);
+    console.log('Connected to MongoDB.');
 
-// configuration ===============================================================
-mongoose.connect(configDB.url, (err, database) => {
-  if (err) return console.log(err)
-  db = database
-  require('./app/routes.js')(app, passport, db);
-}); // connect to our database
+    console.log('Loading routes...');
+    require('./app/routes.js')(app, passport, mongoose.connection, configDB.collectionName);
+    console.log('Routes successfully loaded.');
 
-require('./config/passport')(passport); // pass passport for configuration
+    app.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+    });
+  } catch (err) {
+    console.error('Error connecting to MongoDB:', err);
+    process.exit(1); // Exit process on failure
+  }
+};
 
-// set up our express application
-app.use(morgan('dev')); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser.json()); // get information from html forms
+// Configure Passport
+require('./config/passport')(passport);
+console.log('Passport configured.');
+
+// Configure Express middleware
+app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'))
+app.use(express.static('public'));
 app.use(methodOverride('_method'));
 
-app.set('view engine', 'ejs'); // set up ejs for templating
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
 
-// required for passport
-app.use(session({
-    secret: 'yeehaw', // session secret
+// Configure session and Passport middleware
+app.use(
+  session({
+    secret: 'yeehaw',
     resave: true,
-    saveUninitialized: true
-}));
+    saveUninitialized: true,
+  })
+);
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
+app.use(passport.session());
+app.use(flash());
 
-
-// launch ======================================================================
-app.listen(port);
-console.log('The magic happens on port ' + port);
+startServer();
