@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+    <title>Collaborative Gallery</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span> Profile Page</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+          <h3>Pokemon Leaderboard</h3>
+          <div class="pyramid">
+            <% let rowLength = 1; %>
+            <% for (let i = 0; i < messages.length; ) { %>
+              <div class="row-wrapper">
+                <% for (let j = 0; j < rowLength && i < messages.length; j++, i++) { %>
+                  <div class="message">
+                    <div class="name"><%= messages[i].name %></div>
+                    <% if (messages[i].img) { %>
+                      <img src="<%= messages[i].img %>" alt="Pokemon">
+                    <% } %>
+                    <div class="stats">
+                      <span><%= messages[i].thumbUp %></span>
+                      <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                      <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                <% } %>
+              </div>
+              <% rowLength++; %>
+            <% } %>
+          </div>
+
+          <h2>Add a Pokemon</h2>
+          <% if (user.local.email) { %>
+            <form action="/messages" method="POST">
+              <input type="text" required placeholder="Pokemon Name"  value="<%= user.local.email %>" name="name">
+              <input type="text" required placeholder="Image URL" name="img">
+              <button type="submit">Submit</button>
+            </form>
+          <% } %>
+        </div>
+    </div>
+
+    <div class="local-info">
+        <h3><span class="fa fa-user"></span> Local</h3>
+        <% if (user.local.email) { %>
+            <p>
+                <strong>id</strong>: <%= user._id %><br>
+                <strong>email</strong>: <%= user.local.email %><br>
+            </p>
+            <a href="/unlink/local" class="btn btn-default">Unlink</a>
+        <% } else { %>
+            <a href="/connect/local" class="btn btn-default">Connect Local</a>
+        <% } %>
+    </div>
+
+</div>
+
+<script src="main.js"></script>
+
+</body>
+</html>
