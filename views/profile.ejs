@@ -30,13 +30,13 @@
                     <div class="stats">
                       <span><%= items[i].thumbUp %></span>
                       <form class="thumb-up-form" action="/items/<%= items[i]._id %>/thumbUp?_method=PUT" method="POST">
-                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                        <i class="fa fa-thumbs-up" aria-hidden="true" data-id="<%= items[i]._id %>"></i>
                       </form>
                       <form class="thumb-down-form" action="/items/<%= items[i]._id %>/thumbDown?_method=PUT" method="POST">
-                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                        <i class="fa fa-thumbs-down" aria-hidden="true" data-id="<%= items[i]._id %>"></i>
                       </form>
                       <form class="delete-form" action="/items/<%= items[i]._id %>?_method=DELETE" method="POST">
-                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        <i class="fa fa-trash-o" aria-hidden="true" data-id="<%= items[i]._id %>"></i>
                       </form>
                     </div>
                   </div>
@@ -71,6 +71,5 @@
 </div>
 
 <script src="main.js"></script>
-
 </body>
 </html>
