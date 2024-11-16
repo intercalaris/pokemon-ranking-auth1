@@ -5,6 +5,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #001f33;
+  color: #d0e7f9;
 }
 
 .container {
@@ -30,18 +32,29 @@ body {
   flex-direction: row;
   align-items: center;
   text-align: center;
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
+  background-color: #00334e;
+  border: 1px solid #005066;
   border-radius: 10px;
   padding: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   width: 200px;
   height: 120px;
+  transition: box-shadow 0.3s ease;
+}
+
+.message:hover {
+  box-shadow: 0 0 15px #7eb0c8; /* Glow around the tile */
 }
 
 .message img {
   height: 80px;
-  margin: 0 10px;
+  margin: 0;
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+.message:hover img {
+  filter: drop-shadow(0 0 15px #7eb0c8); /* Glow around the Pokémon */
 }
 
 .message .name {
@@ -49,6 +62,7 @@ body {
   transform: rotate(180deg);
   font-size: 14px;
   margin-right: 10px;
+  color: #d0e7f9;
 }
 
 .message .stats {
@@ -62,40 +76,11 @@ body {
 .message .stats i {
   cursor: pointer;
   margin: 5px 0;
+  color: #7eb0c8;
+  transition: all 0.3s ease;
 }
 
-.local-info {
-  bottom: 20px;
-  right: 20px;
-  width: 200px;
-  padding: 10px;
-  font-size: 12px;
-  color: #333;
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.local-info h3 {
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.local-info p {
-  margin: 0;
-  line-height: 1.5;
-  word-wrap: break-word;
-}
-
-.local-info a {
-  font-size: 10px;
-  display: inline-block;
-  margin-top: 10px;
-  text-decoration: none;
-  color: #007bff;
-}
-
-.local-info a:hover {
-  text-decoration: underline;
+.message .stats i:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px #7eb0c8;
 }

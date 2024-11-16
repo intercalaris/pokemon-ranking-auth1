@@ -18,23 +18,26 @@
         <div class="col-sm-12">
           <h3>Pokemon Leaderboard</h3>
           <div class="pyramid">
-            <!-- first row has one pokemon (length 1) -->
             <% let rowLength = 1; %> 
-            <!-- iterate through all the pokemon (items) -->
             <% for (let i = 0; i < items.length; ) { %>
               <div class="row-wrapper">
-                <!-- in each row, iterate through num of pokemon entries, making sure we're both under num of poke total and num of poke in row, increment both -->
                 <% for (let j = 0; j < rowLength && i < items.length; j++, i++) { %>
-                  <div class="message">
+                  <div class="message" data-id="<%= items[i]._id %>">
                     <div class="name"><%= items[i].name %></div>
                     <% if (items[i].img) { %>
                       <img src="<%= items[i].img %>" alt="Pokemon">
                     <% } %>
                     <div class="stats">
                       <span><%= items[i].thumbUp %></span>
-                      <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-                      <i class="fa fa-thumbs-down" aria-hidden="true"></i>
-                      <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      <form class="thumb-up-form" action="/items/<%= items[i]._id %>/thumbUp?_method=PUT" method="POST">
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                      </form>
+                      <form class="thumb-down-form" action="/items/<%= items[i]._id %>/thumbDown?_method=PUT" method="POST">
+                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                      </form>
+                      <form class="delete-form" action="/items/<%= items[i]._id %>?_method=DELETE" method="POST">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                      </form>
                     </div>
                   </div>
                 <% } %>
@@ -45,8 +48,8 @@
 
           <h2>Add a Pokemon</h2>
           <% if (user.local.email) { %>
-            <form action="/messages" method="POST">
-              <input type="text" required placeholder="Pokemon Name"  value="<%= user.local.email %>" name="name">
+            <form action="/items" method="POST">
+              <input type="text" required placeholder="Pokemon Name" name="name">
               <input type="text" required placeholder="Image URL" name="img">
               <button type="submit">Submit</button>
             </form>
@@ -58,10 +61,8 @@
         <h3><span class="fa fa-user"></span> Local</h3>
         <% if (user.local.email) { %>
             <p>
-                <strong>id</strong>: <%= user._id %><br>
                 <strong>email</strong>: <%= user.local.email %><br>
             </p>
-            <a href="/unlink/local" class="btn btn-default">Unlink</a>
         <% } else { %>
             <a href="/connect/local" class="btn btn-default">Connect Local</a>
         <% } %>

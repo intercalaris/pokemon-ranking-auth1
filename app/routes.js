@@ -1,3 +1,5 @@
+const { ObjectId } = require('mongodb');
+
 module.exports = function (app, passport, db, collectionName) {
   // Home page
   app.get('/', (req, res) => {
@@ -42,14 +44,14 @@ module.exports = function (app, passport, db, collectionName) {
     }
   });
 
-  app.put('/thumbUp', async (req, res) => {
+  app.put('/items/:id/thumbUp', async (req, res) => {
     try {
+      const itemId = req.params.id;
       const result = await db.collection(collectionName).findOneAndUpdate(
-        { name: req.body.name },
-        { $set: { thumbUp: req.body.thumbUp + 1 } },
-        { sort: { _id: -1 }, upsert: true }
+        { _id: ObjectId.createFromHexString(itemId) },
+        { $inc: { thumbUp: 1 } }
       );
-      console.log(`Thumb up updated for: ${req.body.name}`);
+      console.log(`Thumb up incremented for item ID: ${itemId}`);
       res.send(result);
     } catch (err) {
       console.error('Error updating thumbs up:', err);
@@ -57,14 +59,14 @@ module.exports = function (app, passport, db, collectionName) {
     }
   });
 
-  app.put('/thumbDown', async (req, res) => {
+  app.put('/items/:id/thumbDown', async (req, res) => {
     try {
+      const itemId = req.params.id;
       const result = await db.collection(collectionName).findOneAndUpdate(
-        { name: req.body.name },
-        { $set: { thumbUp: req.body.thumbUp - 1 } },
-        { sort: { _id: -1 }, upsert: true }
+        { _id: ObjectId.createFromHexString(itemId) },
+        { $inc: { thumbUp: -1 } }
       );
-      console.log(`Thumb down updated for: ${req.body.name}`);
+      console.log(`Thumb down decremented for item ID: ${itemId}`);
       res.send(result);
     } catch (err) {
       console.error('Error updating thumbs down:', err);
@@ -72,10 +74,11 @@ module.exports = function (app, passport, db, collectionName) {
     }
   });
 
-  app.delete('/items', async (req, res) => {
+  app.delete('/items/:id', async (req, res) => {
     try {
-      await db.collection(collectionName).findOneAndDelete({ name: req.body.name });
-      console.log(`Item deleted: ${req.body.name}`);
+      const itemId = req.params.id;
+      await db.collection(collectionName).deleteOne({ _id: ObjectId.createFromHexString(itemId) });
+      console.log(`Item deleted with ID: ${itemId}`);
       res.send('Item deleted!');
     } catch (err) {
       console.error('Error deleting item:', err);
@@ -85,7 +88,6 @@ module.exports = function (app, passport, db, collectionName) {
 
   // =============================================================================
   // AUTHENTICATE (FIRST LOGIN) ==================================================
-  // =============================================================================
 
   // LOGIN ===============================
   app.get('/login', (req, res) => {

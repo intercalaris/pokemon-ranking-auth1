@@ -7,6 +7,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const { ObjectId } = require('mongodb');
 
 const configDB = require('./config/database.js');
 const app = express();
@@ -19,7 +20,7 @@ const startServer = async () => {
     console.log('Connected to MongoDB.');
 
     console.log('Loading routes...');
-    require('./app/routes.js')(app, passport, mongoose.connection, configDB.collectionName);
+    require('./app/routes.js')(app, passport, mongoose.connection, configDB.collectionName, ObjectId); // Pass ObjectId to routes
     console.log('Routes successfully loaded.');
 
     app.listen(port, () => {
