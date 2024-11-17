@@ -22,7 +22,7 @@
             <% for (let i = 0; i < items.length; ) { %>
               <div class="row-wrapper">
                 <% for (let j = 0; j < rowLength && i < items.length; j++, i++) { %>
-                  <div class="message" data-id="<%= items[i]._id %>">
+                  <div class="item" data-id="<%= items[i]._id %>">
                     <div class="name"><%= items[i].name %></div>
                     <% if (items[i].img) { %>
                       <img src="<%= items[i].img %>" alt="Pokemon">

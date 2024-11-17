@@ -20,7 +20,7 @@ const startServer = async () => {
     console.log('Connected to MongoDB.');
 
     console.log('Loading routes...');
-    require('./app/routes.js')(app, passport, mongoose.connection, configDB.collectionName, ObjectId); // Pass ObjectId to routes
+    require('./app/routes.js')(app, passport, mongoose.connection, configDB.collectionName, ObjectId);
     console.log('Routes successfully loaded.');
 
     app.listen(port, () => {
@@ -28,11 +28,11 @@ const startServer = async () => {
     });
   } catch (err) {
     console.error('Error connecting to MongoDB:', err);
-    process.exit(1); // Exit process on failure
+    process.exit(1); 
   }
 };
 
-// Configure Passport
+
 require('./config/passport')(passport);
 console.log('Passport configured.');
 
