@@ -43,22 +43,22 @@ body {
   transition: box-shadow 0.3s ease;
 }
 
-.message:hover {
+.item:hover {
   box-shadow: 0 0 15px #7eb0c8;
 }
 
-.message img {
+.item img {
   height: 80px;
   margin: 0;
   display: block;
   transition: filter 0.3s ease;
 }
 
-.message:hover img {
+.item:hover img {
   filter: drop-shadow(0 0 15px #7eb0c8); 
 }
 
-.message .name {
+.item .name {
   writing-mode: vertical-lr;
   transform: rotate(180deg);
   font-size: 14px;
@@ -66,7 +66,7 @@ body {
   color: #d0e7f9;
 }
 
-.message .stats {
+.item .stats {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,14 +74,14 @@ body {
   margin-left: 10px;
 }
 
-.message .stats i {
+.item .stats i {
   cursor: pointer;
   margin: 5px 0;
   color: #7eb0c8;
   transition: all 0.3s ease;
 }
 
-.message .stats i:hover {
+.item .stats i:hover {
   color: #ffffff;
   text-shadow: 0 0 8px #7eb0c8;
 }
